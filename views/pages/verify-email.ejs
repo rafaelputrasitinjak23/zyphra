@@ -1,0 +1,23 @@
+<section class="mx-auto max-w-3xl px-4 py-16">
+  <div class="card p-8 text-center md:p-10">
+    <% if (status === 'success') { %>
+      <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-emerald-500/10 text-emerald-300">
+        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+    <% } else if (status === 'error') { %>
+      <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-rose-500/10 text-rose-300">
+        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      </div>
+    <% } else { %>
+      <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blue-500/10 text-blue-300">
+        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/></svg>
+      </div>
+    <% } %>
+    <h1 class="mt-5 text-3xl font-black text-slate-50">Verifikasi Email</h1>
+    <p class="mx-auto mt-3 max-w-xl text-slate-400"><%= message %></p>
+    <div class="mt-7 flex justify-center gap-3">
+      <a class="btn-primary" href="/login">Login</a>
+      <a class="btn-secondary" href="/register">Register</a>
+    </div>
+  </div>
+</section>

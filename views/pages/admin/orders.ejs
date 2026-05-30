@@ -1,0 +1,49 @@
+<section class="mx-auto max-w-7xl px-4 py-10">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-widest text-blue-400">Transaction History</p>
+      <h1 class="mt-2 text-3xl font-black text-slate-50">Riwayat Transaksi Admin</h1>
+      <p class="mt-2 text-sm text-slate-400">Cari invoice, email user, status pembayaran, dan buka invoice otomatis.</p>
+    </div>
+    <a class="btn-soft" href="/admin">Dashboard</a>
+  </div>
+
+  <form class="card mt-6 grid gap-3 p-4 md:grid-cols-[1fr_220px_auto]" method="get" action="/admin/orders">
+    <input class="input" name="q" value="<%= q || '' %>" placeholder="Cari invoice, email, nama user...">
+    <select class="input" name="status">
+      <option value="" <%= !status ? 'selected' : '' %>>Semua Status</option>
+      <% ['paid','pending','failed','cancelled','refunded'].forEach((item)=>{ %>
+        <option value="<%= item %>" <%= status === item ? 'selected' : '' %>><%= item %></option>
+      <% }) %>
+    </select>
+    <button class="btn-primary">Filter</button>
+  </form>
+
+  <div class="mt-5 grid gap-4 md:grid-cols-5">
+    <% ['paid','pending','failed','cancelled','refunded'].forEach((item)=>{ const row = totals.find((x)=>x._id===item); %>
+      <div class="card p-4"><p class="text-xs font-black uppercase text-slate-500"><%= item %></p><p class="mt-1 text-xl font-black text-slate-50"><%= row?.count || 0 %></p><p class="mt-1 text-xs text-blue-300"><%= formatRupiah(row?.total || 0) %></p></div>
+    <% }) %>
+  </div>
+
+  <div class="mt-6 overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 shadow-soft">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left text-sm">
+        <thead class="bg-slate-950/70 text-xs uppercase text-slate-500"><tr><th class="px-5 py-4">Invoice</th><th class="px-5 py-4">User</th><th class="px-5 py-4">Produk</th><th class="px-5 py-4">Status</th><th class="px-5 py-4">Total</th><th class="px-5 py-4">Tanggal</th><th class="px-5 py-4">Aksi</th></tr></thead>
+        <tbody class="divide-y divide-slate-800">
+          <% if(!orders.length){ %><tr><td colspan="7" class="px-5 py-8 text-center text-slate-500">Belum ada transaksi yang cocok.</td></tr><% } %>
+          <% orders.forEach((order)=>{ %>
+            <tr>
+              <td class="px-5 py-4"><p class="font-black text-blue-300"><%= order.invoiceNumber || ('#' + order._id.toString().slice(-8).toUpperCase()) %></p><p class="text-xs text-slate-500"><%= order.paymentMethod || 'Demo Checkout' %></p></td>
+              <td class="px-5 py-4"><p class="font-bold"><%= order.user?.name || 'User' %></p><p class="text-xs text-slate-500"><%= order.user?.email || order.uid %></p></td>
+              <td class="px-5 py-4"><%= order.items.map((item)=> item.qty + 'x ' + item.name).join(', ') %></td>
+              <td class="px-5 py-4"><span class="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs font-black text-blue-300"><%= order.paymentStatus || order.status %></span></td>
+              <td class="px-5 py-4 font-black"><%= formatRupiah(order.total) %></td>
+              <td class="px-5 py-4 text-slate-400"><%= order.createdAt.toLocaleString('id-ID') %></td>
+              <td class="px-5 py-4"><a class="btn-soft !py-2" href="/invoice/<%= order._id %>">Invoice</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

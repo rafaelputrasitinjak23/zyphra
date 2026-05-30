@@ -1,0 +1,18 @@
+<section class="mx-auto max-w-4xl px-4 py-12">
+  <div class="mb-8 text-center">
+    <span class="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-bold text-amber-200">Report Center</span>
+    <h1 class="mt-5 text-4xl font-black text-slate-50 md:text-5xl">Kirim laporan atau pesan ke admin.</h1>
+    <p class="mt-4 text-slate-400">Pesan dari halaman ini akan masuk langsung ke Discord webhook admin.</p>
+  </div>
+  <div class="card p-7 md:p-9">
+    <form class="grid gap-4" action="/report" method="post">
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="block"><span class="label">Nama</span><input class="input mt-2" name="name" value="<%= currentUser?.name || '' %>" required></label>
+        <label class="block"><span class="label">Email</span><input class="input mt-2" type="email" name="email" value="<%= currentUser?.email || '' %>" required></label>
+      </div>
+      <label class="block"><span class="label">Subjek</span><input class="input mt-2" name="subject" placeholder="Contoh: Bug checkout / request produk" required></label>
+      <label class="block"><span class="label">Pesan</span><textarea class="input mt-2 min-h-40" name="message" placeholder="Tulis detail laporan Anda..." required></textarea></label>
+      <button class="btn-primary w-full" type="submit">Kirim Report</button>
+    </form>
+  </div>
+</section>

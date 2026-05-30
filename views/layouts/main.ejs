@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="<%= csrfToken || '' %>">
+  <meta name="client-guard" content="<%= enableClientGuard ? '1' : '0' %>">
+  <title><%= title ? title + ' - ' : '' %>Zyphra</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { brand: { 50:'#eff6ff',100:'#dbeafe',600:'#2563eb',700:'#1d4ed8',900:'#1e3a8a' } }, boxShadow: { soft:'0 20px 55px rgba(37, 99, 235, .18)' } } } }
+  </script>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body class="bg-slate-950 text-slate-300 antialiased">
+  <%- include('../partials/navbar') %>
+  <main class="min-h-[calc(100vh-160px)]">
+    <% if (success) { %><div class="mx-auto mt-5 max-w-7xl px-4"><div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-4 py-3 text-sm text-blue-200"><%= success %></div></div><% } %>
+    <% if (error) { %><div class="mx-auto mt-5 max-w-7xl px-4"><div class="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"><%= error %></div></div><% } %>
+    <%- body %>
+  </main>
+  <%- include('../partials/footer') %>
+  <script src="/js/main.js"></script>
+</body>
+</html>

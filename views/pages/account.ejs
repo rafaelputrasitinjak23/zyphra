@@ -1,0 +1,32 @@
+<section class="mx-auto max-w-7xl px-4 py-10">
+  <div class="card p-7">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-sm font-bold uppercase tracking-widest text-blue-400">User Account</p>
+        <h1 class="mt-2 text-3xl font-black text-slate-50"><%= currentUser.name %></h1>
+        <p class="mt-1 text-slate-400"><%= currentUser.email %></p>
+      </div>
+      <span class="rounded-full bg-blue-500/10 px-4 py-2 text-sm font-bold text-blue-300"><%= currentUser.emailVerified ? 'Email verified' : 'Belum verified' %></span>
+    </div>
+  </div>
+  <h2 class="mt-8 text-2xl font-black text-slate-50">Produk yang Sudah Dibeli</h2>
+  <div class="mt-5 space-y-5">
+    <% if (!orders.length) { %><div class="card p-8 text-center text-slate-500">Belum ada pembelian.</div><% } %>
+    <% orders.forEach((order) => { %>
+      <div class="card p-5">
+        <div class="flex flex-col gap-3 border-b border-slate-800 pb-4 md:flex-row md:items-center md:justify-between">
+          <div><p class="font-black text-slate-50"><%= order.invoiceNumber || ('Order #' + order._id.toString().slice(-8).toUpperCase()) %></p><p class="text-sm text-slate-500"><%= order.createdAt.toLocaleString('id-ID') %> • <%= order.paymentStatus || order.status %></p></div>
+          <div class="flex flex-wrap items-center gap-2"><p class="font-black text-blue-300"><%= formatRupiah(order.total) %></p><a class="btn-soft !py-2" href="/invoice/<%= order._id %>">Invoice</a></div>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <% order.items.forEach((item) => { const productId = item.product?._id || item.product; const slug = item.product?.slug || ''; %>
+            <div class="flex gap-4 rounded-2xl bg-slate-950/50 p-3">
+              <img src="<%= item.imageUrl %>" class="h-20 w-24 rounded-xl object-cover" alt="<%= item.name %>">
+              <div class="min-w-0 flex-1"><h3 class="truncate font-black text-slate-100"><%= item.name %></h3><p class="text-sm text-slate-500"><%= item.qty %> item</p><div class="mt-2 flex flex-wrap gap-3"><a href="/download/<%= order._id %>/<%= productId %>" class="inline-flex text-sm font-bold text-blue-300">Download File</a><% if (slug) { %><a href="/product/<%= slug %>#reviews" class="inline-flex text-sm font-bold text-amber-300">Beri Review</a><% } %></div></div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>

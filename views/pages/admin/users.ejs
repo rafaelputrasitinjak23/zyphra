@@ -1,0 +1,30 @@
+<section class="mx-auto max-w-7xl px-4 py-10">
+  <div class="flex items-center justify-between"><div><p class="text-sm font-bold uppercase tracking-widest text-blue-600">Admin Access</p><h1 class="mt-2 text-3xl font-black text-slate-950">Kelola User</h1></div><a class="btn-soft" href="/admin">Dashboard</a></div>
+  <div class="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-left text-sm">
+        <thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="px-5 py-4">User</th><th class="px-5 py-4">Provider</th><th class="px-5 py-4">Verified</th><th class="px-5 py-4">Role</th><th class="px-5 py-4">Aksi</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <% users.forEach((user)=>{ %>
+            <tr>
+              <td class="px-5 py-4"><p class="font-black"><%= user.name %></p><p class="text-xs text-slate-500"><%= user.email %></p></td>
+              <td class="px-5 py-4"><%= user.provider %></td>
+              <td class="px-5 py-4"><%= user.emailVerified ? 'Ya' : 'Tidak' %></td>
+              <td class="px-5 py-4"><span class="rounded-full <%= user.role === 'admin' ? 'bg-blue-50 text-blue-700' : 'bg-slate-100 text-slate-600' %> px-3 py-1 text-xs font-black"><%= user.role %></span></td>
+              <td class="px-5 py-4">
+                <div class="flex flex-wrap gap-2">
+                  <% if (user.role === 'admin') { %>
+                    <form action="/admin/users/<%= user.uid %>/remove-admin" method="post" onsubmit="return confirm('Cabut akses admin user ini?')"><button class="btn-soft !py-2 text-amber-700" <%= user.uid === currentUser.uid ? 'disabled' : '' %>>Cabut Admin</button></form>
+                  <% } else { %>
+                    <form action="/admin/users/<%= user.uid %>/make-admin" method="post" onsubmit="return confirm('Jadikan user ini admin?')"><button class="btn-soft !py-2 text-blue-700">Jadikan Admin</button></form>
+                  <% } %>
+                  <form action="/admin/users/<%= user.uid %>/delete" method="post" onsubmit="return confirm('Hapus user dan data order?')"><button class="btn-soft !py-2 text-rose-600" <%= user.uid === currentUser.uid ? 'disabled' : '' %>>Delete User</button></form>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

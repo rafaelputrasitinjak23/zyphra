@@ -1,0 +1,29 @@
+<section class="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-2 lg:items-center">
+  <div>
+    <span class="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-bold text-blue-200">Register</span>
+    <h1 class="mt-5 text-4xl font-black text-slate-50 md:text-5xl">Buat akun Zyphra dengan password kuat.</h1>
+    <p class="mt-4 text-lg leading-8 text-slate-400">Register memakai captcha unik, email verification, dan aturan password kuat agar akun lebih aman.</p>
+  </div>
+  <div class="card p-7 md:p-9">
+    <div id="authAlert" class="mb-4 hidden rounded-2xl border px-4 py-3 text-sm"></div>
+    <form id="registerForm" class="space-y-4">
+      <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+      
+      <input type="hidden" id="captchaToken" value="<%= captchaToken %>">
+      <label class="block"><span class="label">Nama</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v1h16v-1c0-3-4-5-8-5z"/></svg><input class="input pl-12" id="name" required></div></label>
+      <label class="block"><span class="label">Email</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 4h16v16H4z"/><path stroke-width="2" d="m4 7 8 6 8-6"/></svg><input class="input pl-12" id="email" type="email" required></div></label>
+      <label class="block"><span class="label">Password kuat</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 1 0-8 0v4"/></svg><input class="input pl-12" id="password" type="password" minlength="10" required></div><p class="mt-2 text-xs text-slate-500">Minimal 10 karakter, huruf besar, huruf kecil, angka, dan simbol.</p></label>
+      <label class="block"><span class="label">Konfirmasi Password</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M9 12l2 2 4-4"/><path stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><input class="input pl-12" id="confirmPassword" type="password" minlength="10" required></div></label>
+      <label class="block">
+        <span class="label">Captcha</span>
+        <div class="mt-2 grid gap-3 sm:grid-cols-[150px_1fr]">
+          <div id="captchaDisplay" class="select-none rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-center font-black tracking-[0.35em] text-blue-200"><%= captchaCode %></div>
+          <input class="input uppercase tracking-widest" id="captcha" placeholder="Ketik kode" autocomplete="off" required>
+        </div>
+      </label>
+      <button class="btn-primary w-full" type="submit">Daftar & Kirim Email Verifikasi</button>
+    </form>
+    <p class="mt-5 text-center text-sm text-slate-400">Sudah punya akun? <a class="font-bold text-blue-300" href="/login">Login</a></p>
+  </div>
+</section>
+<script type="module" src="/js/auth.js"></script>

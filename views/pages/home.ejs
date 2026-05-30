@@ -1,0 +1,58 @@
+<section class="mx-auto max-w-7xl px-4 py-10">
+  <div class="card overflow-hidden p-0">
+    <div class="grid gap-0 lg:grid-cols-[1fr_.9fr] lg:items-stretch">
+      <div class="p-8 md:p-12">
+        <span class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-700">Digital Script Marketplace</span>
+        <h1 class="mt-5 text-4xl font-black tracking-tight text-slate-950 md:text-6xl">Beli script premium dengan akses download selamanya.</h1>
+        <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Cari script website, bot, REST API, dan produk digital lainnya. Setelah checkout, file tetap tersimpan di akun dan bisa diunduh kapan saja.</p>
+      </div>
+      <div class="relative min-h-[280px] overflow-hidden bg-slate-950">
+        <img src="<%= homeThumbnailUrl %>" alt="Thumbnail marketplace" class="absolute inset-0 h-full w-full object-cover opacity-80">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 p-7 text-white">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0z"/></svg>
+            Instant Download
+          </div>
+          <p class="mt-4 max-w-sm text-2xl font-black">Produk digital siap pakai untuk developer dan owner bot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form action="/" class="mt-8 rounded-3xl border border-slate-200 bg-white p-3 shadow-soft md:flex md:items-center md:gap-3">
+    <div class="relative flex-1">
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg>
+      <input class="input border-0 pl-12 shadow-none focus:ring-0" name="q" value="<%= q %>" placeholder="Cari script bot, website, API...">
+    </div>
+    <button class="btn-primary mt-3 w-full md:mt-0 md:w-auto" type="submit">Cari Produk</button>
+  </form>
+
+  <div class="mt-10 flex items-end justify-between gap-4">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-widest text-blue-600">Produk terbaru</p>
+      <h2 class="mt-2 text-2xl font-black text-slate-950">Katalog Script</h2>
+    </div>
+    <p class="text-sm text-slate-500"><%= products.length %> produk ditemukan</p>
+  </div>
+
+  <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <% products.forEach((product) => { %>
+      <article class="card overflow-hidden transition hover:-translate-y-1 hover:shadow-xl">
+        <a href="/product/<%= product.slug %>"><img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="h-44 w-full object-cover"></a>
+        <div class="p-5">
+          <div class="mb-3 flex items-center justify-between gap-2">
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600"><%= product.category %></span>
+            <span class="text-xs font-semibold <%= product.stock > 0 ? 'text-blue-700' : 'text-rose-600' %>"><%= product.stock > 0 ? product.stock + ' tersedia' : 'Habis' %></span>
+          </div>
+          <h3 class="line-clamp-2 text-lg font-black text-slate-950"><a href="/product/<%= product.slug %>"><%= product.name %></a></h3>
+          <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-500"><%= product.description %></p>
+          <div class="mt-5 flex items-center justify-between gap-3">
+            <p class="font-black text-blue-700"><%= formatRupiah(product.price) %></p>
+            <a class="btn-soft !px-3 !py-2 text-sm" href="/product/<%= product.slug %>">Detail</a>
+          </div>
+        </div>
+      </article>
+    <% }) %>
+  </div>
+</section>

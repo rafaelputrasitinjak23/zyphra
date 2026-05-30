@@ -1,0 +1,74 @@
+<section class="mx-auto max-w-7xl px-4 py-10">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="text-sm font-bold uppercase tracking-widest text-blue-400">Admin Panel</p>
+      <h1 class="mt-2 text-3xl font-black text-slate-50">Dashboard Statistik</h1>
+      <p class="mt-2 text-sm text-slate-400">Pantau penjualan, transaksi, produk terlaris, dan aktivitas terbaru Zyphra.</p>
+    </div>
+    <div class="flex flex-wrap gap-2"><a class="btn-soft" href="/admin/products">Produk</a><a class="btn-soft" href="/admin/users">User & Admin</a><a class="btn-soft" href="/admin/orders">Riwayat Transaksi</a></div>
+  </div>
+
+  <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Total Revenue</p><p class="mt-2 text-2xl font-black text-blue-300"><%= formatRupiah(stats.revenue) %></p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Revenue Bulan Ini</p><p class="mt-2 text-2xl font-black text-blue-300"><%= formatRupiah(stats.monthRevenue) %></p><p class="mt-1 text-xs text-slate-500"><%= stats.monthOrders %> transaksi</p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Revenue Hari Ini</p><p class="mt-2 text-2xl font-black text-blue-300"><%= formatRupiah(stats.todayRevenue) %></p><p class="mt-1 text-xs text-slate-500"><%= stats.todayOrders %> transaksi</p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Review Produk</p><p class="mt-2 text-3xl font-black text-slate-50"><%= stats.reviews %></p></div>
+  </div>
+
+  <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Produk</p><p class="mt-2 text-3xl font-black text-slate-50"><%= stats.products %></p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">User</p><p class="mt-2 text-3xl font-black text-slate-50"><%= stats.users %></p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Admin</p><p class="mt-2 text-3xl font-black text-slate-50"><%= stats.admins %></p></div>
+    <div class="card p-6"><p class="text-sm font-bold text-slate-400">Transaksi</p><p class="mt-2 text-3xl font-black text-slate-50"><%= stats.orders %></p></div>
+  </div>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+    <div class="card p-6">
+      <div class="flex items-center justify-between gap-3"><h2 class="text-xl font-black text-slate-50">Penjualan 7 Hari Terakhir</h2><a class="text-sm font-bold text-blue-300" href="/admin/orders">Lihat transaksi</a></div>
+      <div class="mt-5 space-y-3">
+        <% if (!sales7Days.length) { %><p class="text-sm text-slate-500">Belum ada penjualan dalam 7 hari terakhir.</p><% } %>
+        <% const maxSales = Math.max(...sales7Days.map((x)=>x.total), 1); %>
+        <% sales7Days.forEach((day)=>{ %>
+          <div>
+            <div class="mb-1 flex items-center justify-between text-xs font-bold text-slate-400"><span><%= day._id %> • <%= day.count %> order</span><span><%= formatRupiah(day.total) %></span></div>
+            <div class="h-3 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-blue-500" style="width:<%= Math.max(6, Math.round((day.total / maxSales) * 100)) %>%"></div></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <div class="card p-6">
+      <h2 class="text-xl font-black text-slate-50">Produk Terlaris</h2>
+      <div class="mt-5 space-y-3">
+        <% if (!topProducts.length) { %><p class="text-sm text-slate-500">Belum ada produk.</p><% } %>
+        <% topProducts.forEach((product, index)=>{ %>
+          <div class="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/50 p-3">
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-blue-500/10 text-sm font-black text-blue-300"><%= index + 1 %></span>
+            <img src="<%= product.imageUrl %>" class="h-11 w-14 rounded-xl object-cover" alt="<%= product.name %>">
+            <div class="min-w-0 flex-1"><p class="truncate font-black text-slate-100"><%= product.name %></p><p class="text-xs text-slate-500"><%= product.sold %> terjual • stok <%= product.stock %></p></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 card p-6">
+    <div class="flex items-center justify-between gap-3"><h2 class="text-xl font-black text-slate-50">Transaksi Terbaru</h2><a class="btn-soft !py-2" href="/admin/orders">Buka Riwayat</a></div>
+    <div class="mt-5 overflow-x-auto">
+      <table class="min-w-full text-left text-sm">
+        <thead class="text-xs uppercase text-slate-500"><tr><th class="px-4 py-3">Invoice</th><th class="px-4 py-3">User</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Total</th><th class="px-4 py-3">Tanggal</th></tr></thead>
+        <tbody class="divide-y divide-slate-800">
+          <% recentOrders.forEach((order)=>{ %>
+            <tr>
+              <td class="px-4 py-3"><a class="font-black text-blue-300" href="/invoice/<%= order._id %>"><%= order.invoiceNumber || ('#' + order._id.toString().slice(-8).toUpperCase()) %></a></td>
+              <td class="px-4 py-3"><%= order.user?.email || order.uid %></td>
+              <td class="px-4 py-3"><span class="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-black text-blue-300"><%= order.paymentStatus || order.status %></span></td>
+              <td class="px-4 py-3 font-black"><%= formatRupiah(order.total) %></td>
+              <td class="px-4 py-3 text-slate-400"><%= order.createdAt.toLocaleString('id-ID') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

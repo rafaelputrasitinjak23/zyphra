@@ -1,0 +1,29 @@
+<section class="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-2 lg:items-center">
+  <div>
+    <span class="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-bold text-blue-200">Secure Login</span>
+    <h1 class="mt-5 text-4xl font-black text-slate-50 md:text-5xl">Masuk dengan email untuk akses produk digital.</h1>
+    <p class="mt-4 text-lg leading-8 text-slate-400">Admin dan user login dari halaman yang sama. Jika akun Anda memiliki role admin, sistem akan langsung mengarahkan ke dashboard admin.</p>
+  </div>
+  <div class="card p-7 md:p-9">
+    <div id="authAlert" class="mb-4 hidden rounded-2xl border px-4 py-3 text-sm"></div>
+    <form id="loginForm" class="space-y-4">
+      <input type="text" id="website" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+      
+      <input type="hidden" id="nextUrl" value="<%= next %>">
+      <input type="hidden" id="captchaToken" value="<%= captchaToken %>">
+      <label class="block"><span class="label">Email</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 4h16v16H4z"/><path stroke-width="2" d="m4 7 8 6 8-6"/></svg><input class="input pl-12" id="email" type="email" required></div></label>
+      <label class="block"><span class="label">Password</span><div class="relative mt-2"><svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 1 0-8 0v4"/></svg><input class="input pl-12" id="password" type="password" required></div></label>
+      <label class="block">
+        <span class="label">Captcha</span>
+        <div class="mt-2 grid gap-3 sm:grid-cols-[150px_1fr]">
+          <div id="captchaDisplay" class="select-none rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-center font-black tracking-[0.35em] text-blue-200"><%= captchaCode %></div>
+          <input class="input uppercase tracking-widest" id="captcha" placeholder="Ketik kode" autocomplete="off" required>
+        </div>
+      </label>
+      <button class="btn-primary w-full" type="submit">Masuk</button>
+    </form>
+    <div class="mt-5 flex flex-wrap justify-center gap-3 text-sm text-slate-400"><a class="font-bold text-blue-300" href="/register">Daftar akun</a><span>•</span><a class="font-bold text-blue-300" href="/forgot-password">Lupa password?</a></div>
+  </div>
+</section>
+<script>window.firebaseConfig=<%- JSON.stringify(firebaseConfig) %>;</script>
+<script type="module" src="/js/auth.js"></script>

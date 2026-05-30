@@ -1,0 +1,12 @@
+<section class="mx-auto max-w-4xl px-4 py-10">
+  <h1 class="text-3xl font-black text-slate-950"><%= product ? 'Edit Produk' : 'Tambah Produk' %></h1>
+  <form class="card mt-6 grid gap-5 p-7" method="post" action="<%= product ? '/admin/products/' + product._id : '/admin/products' %>">
+    <label><span class="label">Nama Barang</span><input class="input mt-2" name="name" value="<%= product?.name || '' %>" required></label>
+    <label><span class="label">Deskripsi</span><textarea class="input mt-2 min-h-32" name="description" required><%= product?.description || '' %></textarea></label>
+    <div class="grid gap-5 md:grid-cols-3"><label><span class="label">Harga</span><input class="input mt-2" name="price" type="number" min="0" value="<%= product?.price || '' %>" required></label><label><span class="label">Total Item Tersedia</span><input class="input mt-2" name="stock" type="number" min="0" value="<%= product?.stock || '' %>" required></label><label><span class="label">Kategori</span><input class="input mt-2" name="category" value="<%= product?.category || 'Script' %>"></label></div>
+    <label><span class="label">URL Gambar Produk</span><input class="input mt-2" name="imageUrl" type="url" value="<%= product?.imageUrl || '' %>" required></label>
+    <label><span class="label">URL File Produk</span><input class="input mt-2" name="fileUrl" type="url" value="<%= product?.fileUrl || '' %>" required><span class="mt-2 block text-xs text-slate-500">User akan download lewat endpoint server, bukan redirect langsung ke URL ini.</span></label>
+    <div class="flex flex-wrap gap-4"><label class="inline-flex items-center gap-2 font-semibold"><input type="checkbox" name="featured" <%= product?.featured ? 'checked' : '' %>> Featured</label><label class="inline-flex items-center gap-2 font-semibold"><input type="checkbox" name="active" <%= product ? (product.active ? 'checked' : '') : 'checked' %>> Aktif</label></div>
+    <div class="flex gap-3"><button class="btn-primary">Simpan</button><a class="btn-soft" href="/admin/products">Batal</a></div>
+  </form>
+</section>

@@ -1,0 +1,8 @@
+<section class="mx-auto max-w-6xl px-4 py-10">
+  <div class="flex items-center justify-between"><h1 class="text-3xl font-black text-slate-950">Banner Iklan</h1><a class="btn-soft" href="/admin">Dashboard</a></div>
+  <form class="card mt-6 grid gap-4 p-6" method="post" action="/admin/banners">
+    <div class="grid gap-4 md:grid-cols-3"><input class="input" name="title" placeholder="Judul banner" required><input class="input" name="imageUrl" type="url" placeholder="URL gambar banner" required><input class="input" name="link" placeholder="Link tujuan /product/..." value="/"></div>
+    <label class="inline-flex items-center gap-2 font-semibold"><input type="checkbox" name="active" checked> Aktif</label><button class="btn-primary w-fit">Tambah Banner</button>
+  </form>
+  <div class="mt-6 grid gap-4 md:grid-cols-3"><% banners.forEach((banner)=>{ %><div class="card overflow-hidden"><img src="<%= banner.imageUrl %>" class="h-36 w-full object-cover"><div class="p-4"><h2 class="font-black"><%= banner.title %></h2><p class="mt-1 text-sm text-slate-500"><%= banner.link %></p><form class="mt-3" action="/admin/banners/<%= banner._id %>/delete" method="post"><button class="btn-soft !py-2 text-rose-600">Hapus</button></form></div></div><% }) %></div>
+</section>

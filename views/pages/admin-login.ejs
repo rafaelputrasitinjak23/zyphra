@@ -1,0 +1,36 @@
+<section class="mx-auto grid max-w-6xl gap-8 px-4 py-12 lg:grid-cols-2 lg:items-center">
+  <div>
+    <span class="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700">Admin Login</span>
+    <h1 class="mt-5 text-4xl font-black text-slate-950 md:text-5xl">Masuk ke dashboard admin.</h1>
+    <p class="mt-4 text-lg leading-8 text-slate-600">Gunakan email dan password admin dari file <code class="rounded bg-slate-100 px-2 py-1 text-sm">.env</code>. Akun admin dibuat melalui perintah <code class="rounded bg-slate-100 px-2 py-1 text-sm">npm run create-admin</code>.</p>
+    <div class="mt-6 rounded-3xl border border-blue-100 bg-blue-50 p-5 text-sm leading-7 text-blue-800">
+      <p class="font-black">Default development:</p>
+      <p>Email: <code><%= adminEmailHint %></code></p>
+      <p>Password: lihat/ubah <code>ADMIN_PASSWORD</code> di file <code>.env</code>.</p>
+    </div>
+  </div>
+  <div class="card p-7 md:p-9">
+    <div id="authAlert" class="mb-4 hidden rounded-2xl border px-4 py-3 text-sm"></div>
+    <form id="loginForm" class="space-y-4">
+      <input type="hidden" id="nextUrl" value="/admin">
+      <label class="block">
+        <span class="label">Email Admin</span>
+        <div class="relative mt-2">
+          <svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M4 4h16v16H4z"/><path stroke-width="2" d="m4 7 8 6 8-6"/></svg>
+          <input class="input pl-12" id="email" type="email" value="<%= adminEmailHint %>" required>
+        </div>
+      </label>
+      <label class="block">
+        <span class="label">Password Admin</span>
+        <div class="relative mt-2">
+          <svg class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 1 0-8 0v4"/></svg>
+          <input class="input pl-12" id="password" type="password" required>
+        </div>
+      </label>
+      <button class="btn-primary w-full" type="submit">Masuk Admin</button>
+    </form>
+    <p class="mt-5 text-center text-sm text-slate-500">Admin harus ada di Firebase Auth dan email-nya masuk daftar <code>ADMIN_EMAILS</code>.</p>
+  </div>
+</section>
+<script>window.firebaseConfig=<%- JSON.stringify(firebaseConfig) %>;</script>
+<script type="module" src="/js/auth.js"></script>
