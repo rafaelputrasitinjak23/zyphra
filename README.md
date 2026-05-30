@@ -227,3 +227,110 @@ Fitur tambahan yang masuk di versi ini:
   - rating rata-rata tampil di halaman produk
 
 Catatan: checkout masih mode demo langsung `paid`. Untuk produksi, hubungkan status `paymentStatus` dengan payment gateway seperti Midtrans, Xendit, atau Tripay.
+
+## Deploy ke Vercel
+
+Project ini sudah mendukung Vercel serverless melalui file:
+
+```text
+api/index.js
+vercel.json
+.vercelignore
+```
+
+### 1. Push ke GitHub
+
+```bash
+git init
+git add .
+git commit -m "Deploy Zyphra to Vercel"
+git branch -M main
+git remote add origin https://github.com/username/zyphra.git
+git push -u origin main
+```
+
+### 2. Import project di Vercel
+
+Buka Vercel, pilih **Add New Project**, lalu import repository Zyphra.
+
+Framework preset boleh pilih **Other**.
+
+Build command bisa dikosongkan atau gunakan:
+
+```bash
+npm run vercel-build
+```
+
+Install command:
+
+```bash
+npm install
+```
+
+### 3. Isi Environment Variables di Vercel
+
+Masukkan semua isi `.env` ke menu:
+
+```text
+Project Settings > Environment Variables
+```
+
+Wajib ubah bagian ini sesuai domain deploy:
+
+```env
+NODE_ENV=production
+APP_URL=https://domain-vercel-kamu.vercel.app
+TRUSTED_ORIGINS=https://domain-vercel-kamu.vercel.app
+SESSION_SECRET=isi_random_panjang_minimal_32_karakter
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/zyphra
+```
+
+Jika memakai custom domain, isi seperti ini:
+
+```env
+APP_URL=https://domainkamu.com
+TRUSTED_ORIGINS=https://domainkamu.com,https://domain-vercel-kamu.vercel.app
+```
+
+### 4. MongoDB wajib pakai cloud database
+
+Vercel tidak bisa memakai MongoDB lokal seperti:
+
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/zyphra_ecommerce
+```
+
+Gunakan MongoDB Atlas:
+
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/zyphra_ecommerce
+```
+
+Di MongoDB Atlas, bagian Network Access bisa isi sementara:
+
+```text
+0.0.0.0/0
+```
+
+### 5. Buat admin di production
+
+Ada 2 cara.
+
+Cara lokal menggunakan env production:
+
+```bash
+npm install
+npm run create-admin
+```
+
+Pastikan `.env` lokal berisi `MONGODB_URI`, `FIREBASE_SERVICE_ACCOUNT`, `ADMIN_EMAIL`, dan `ADMIN_PASSWORD` yang sama seperti Vercel.
+
+Atau jalankan command dari terminal Vercel jika tersedia.
+
+### 6. Catatan penting Vercel
+
+- Folder `public/uploads` tidak cocok untuk upload permanen di Vercel karena filesystem serverless bersifat sementara.
+- Project ini aman karena produk memakai `imageUrl` dan `fileUrl`, bukan upload file langsung ke server.
+- Jika nanti ingin upload file langsung, gunakan Cloudinary, Firebase Storage, Supabase Storage, S3, atau Cloudflare R2.
+- Session tetap disimpan di MongoDB melalui `connect-mongo`, jadi aman untuk serverless.
+- Rate limit in-memory hanya efektif per instance serverless. Untuk proteksi production yang lebih kuat, gunakan Upstash Redis rate limiter.

@@ -14,10 +14,11 @@ const { attachSecurity, verifyOrigin, csrfProtection, rateLimit } = require('./m
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 connectDB().catch(err => {
-  console.error(err);
-  process.exit(1);
+  console.error('MongoDB connection error:', err.message);
+  if (require.main === module) process.exit(1);
 });
 
 app.set('trust proxy', 1);
@@ -34,7 +35,7 @@ app.use(helmet({
     }
   }
 }));
-app.use(morgan('dev'));
+if (!isProduction) app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(methodOverride('_method'));
@@ -58,7 +59,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   rolling: true,
-  cookie: { maxAge: 1000 * 60 * 60, httpOnly: true, sameSite: 'lax' },
+  cookie: {
+    maxAge: 1000 * 60 * 60,
+    httpOnly: true,
+    sameSite: isProduction ? 'none' : 'lax',
+    secure: isProduction
+  },
   store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI, collectionName: 'sessions', ttl: 60 * 60 })
 }));
 
@@ -88,4 +94,8 @@ app.use((err, req, res, next) => {
   res.status(500).render('pages/error', { title: 'Server Error', message: err.message || 'Terjadi kesalahan server.' });
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+}
+
+module.exports = app;
