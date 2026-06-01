@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/bg') %>
+
+  <main class="mx-auto grid min-h-screen w-[92%] max-w-md place-items-center py-10">
+    <section class="glass w-full rounded-[2rem] p-6 md:p-8">
+      <a href="/" class="mb-8 flex items-center gap-3">
+        <div class="grid h-12 w-12 place-items-center rounded-2xl bg-slate-950 text-lg font-black text-white">Z</div>
+        <div>
+          <h1 class="text-xl font-black leading-none tracking-tight"><%= siteName %></h1>
+          <p class="text-xs font-bold text-slate-500">Admin Login</p>
+        </div>
+      </a>
+
+      <h2 class="text-4xl font-black tracking-[-0.04em]">Masuk Admin</h2>
+      <p class="mt-2 font-semibold leading-relaxed text-slate-500">Login untuk menambah script, code, URL download, gambar, dan deskripsi.</p>
+
+      <% if (error) { %>
+        <div class="mt-5 rounded-2xl bg-red-50 p-4 text-sm font-black text-red-700 ring-1 ring-red-100"><%= error %></div>
+      <% } %>
+
+      <form class="mt-7 grid gap-4" method="POST" action="/admin/login">
+        <label class="form-label">
+          Username
+          <input class="form-input" name="username" placeholder="admin" autocomplete="username" required>
+        </label>
+        <label class="form-label">
+          Password
+          <input class="form-input" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+        </label>
+        <button class="btn rounded-2xl bg-blue-600 px-5 py-4 font-black text-white shadow-xl shadow-blue-600/20">Login</button>
+      </form>
+
+      <a href="/" class="mt-5 inline-flex text-sm font-black text-slate-500 hover:text-slate-950">← Kembali ke home</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<div class="zyphra-chat" data-chat-widget>
+  <button class="zyphra-chat-button" data-chat-open aria-label="Buka Zyphra AI">
+    <span class="zyphra-chat-button-icon">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3.25c-4.97 0-9 3.43-9 7.66 0 2.44 1.35 4.61 3.45 6.01-.08.87-.36 1.78-.82 2.58-.22.38.13.83.55.7 1.37-.42 2.66-1.06 3.66-1.83.69.13 1.41.2 2.16.2 4.97 0 9-3.43 9-7.66s-4.03-7.66-9-7.66Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M8.5 10.75h.01M12 10.75h.01M15.5 10.75h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="text-sm font-black">Zyphra AI</span>
+  </button>
+
+  <section class="zyphra-chat-panel hidden" data-chat-panel aria-label="Zyphra AI Chat">
+    <div class="zyphra-chat-head">
+      <div class="flex items-center gap-3">
+        <div class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-950 text-sm font-black text-white">AI</div>
+        <div>
+          <h2 class="text-base font-black tracking-tight text-slate-950">Zyphra AI</h2>
+          <p class="text-xs font-bold text-slate-500">Asisten pencari script dan code</p>
+        </div>
+      </div>
+      <button class="zyphra-chat-close" data-chat-close aria-label="Tutup chat">×</button>
+    </div>
+
+    <div class="zyphra-chat-messages" data-chat-messages>
+      <div class="zyphra-msg zyphra-msg-ai">
+        <div class="zyphra-msg-bubble">
+          Halo, saya Zyphra AI. Saya bisa membantu mencari script, code, bot, API, website, dan template yang tersedia di Zyphra. Kamu bisa tanya seperti: carikan bot WhatsApp, cari API downloader, atau siapa pembuat Zyphra AI?
+        </div>
+      </div>
+    </div>
+
+    <div class="zyphra-chat-suggestions" data-chat-suggestions>
+      <button type="button" data-chat-suggest="Carikan script bot WhatsApp yang tersedia">Bot WA</button>
+      <button type="button" data-chat-suggest="Cari code JavaScript yang tersedia">Code JS</button>
+      <button type="button" data-chat-suggest="Carikan API atau website yang bisa didownload">API/Web</button>
+      <button type="button" data-chat-suggest="Siapa pembuat Zyphra AI?">Pembuat AI</button>
+    </div>
+
+    <form class="zyphra-chat-form" data-chat-form>
+      <input data-chat-input maxlength="700" placeholder="Tanya Zyphra AI..." autocomplete="off">
+      <button type="submit" aria-label="Kirim pesan">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 3 10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="m21 3-7 18-4-7-7-4 18-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </form>
+  </section>
+</div>

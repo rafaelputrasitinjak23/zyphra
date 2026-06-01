@@ -1,21 +1,16 @@
 {
   "version": 2,
-  "builds": [
+  "installCommand": "corepack enable && corepack prepare pnpm@10.14.0 --activate && pnpm install --no-frozen-lockfile",
+  "buildCommand": "node -e \"console.log('No build step needed for Zyphra Share Script')\"",
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.js"
+      "source": "/(.*)",
+      "destination": "/api/index.js"
     }
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{views/**,public/**,config/**,models/**,routes/**,middleware/**,services/**,utils.js}",
-      "maxDuration": 30
+      "includeFiles": "{views/**,public/**,models/**,config/**,utils/**}"
     }
   }
 }

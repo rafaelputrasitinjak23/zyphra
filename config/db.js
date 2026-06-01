@@ -1,26 +1,26 @@
 const mongoose = require('mongoose');
 
-let cached = global.__zyphraMongoCache;
+let cached = global.mongooseCache;
 
 if (!cached) {
-  cached = global.__zyphraMongoCache = {
+  cached = global.mongooseCache = {
     conn: null,
     promise: null
   };
 }
 
 async function connectDB() {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error('MONGODB_URI belum diisi. Isi MONGODB_URI di .env lokal atau Environment Variables Vercel.');
+  if (cached.conn) return cached.conn;
 
-  if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI belum diisi. Isi di .env untuk lokal atau Environment Variables di Vercel.');
+  }
 
   if (!cached.promise) {
-    mongoose.set('strictQuery', true);
-    cached.promise = mongoose.connect(uri, {
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      dbName: process.env.MONGODB_DB || undefined,
       bufferCommands: false,
-      maxPoolSize: Number(process.env.MONGODB_MAX_POOL_SIZE || 5),
-      serverSelectionTimeoutMS: Number(process.env.MONGODB_TIMEOUT_MS || 10000)
+      serverSelectionTimeoutMS: 10000
     });
   }
 

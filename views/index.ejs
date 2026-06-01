@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/bg') %>
+  <%- include('partials/header') %>
+
+  <main class="mx-auto w-[92%] max-w-7xl">
+    <section class="grid gap-12 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div class="fade-in">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-black text-blue-700 shadow-sm ring-1 ring-blue-100">
+          <span class="h-2 w-2 rounded-full bg-blue-600"></span>
+          Platform Sharing Script & Code
+        </div>
+
+        <h2 class="max-w-4xl text-5xl font-black leading-[1.02] tracking-[-0.055em] md:text-7xl">
+          Share bot, website, API, dan kode dengan
+          <span class="gradient-title">tampilan premium.</span>
+        </h2>
+
+        <p class="mt-6 max-w-2xl text-lg font-semibold leading-relaxed text-slate-600">
+          Tempat membagikan script WhatsApp bot, Telegram bot, Discord bot, source code website, REST API, template, dan potongan kode dengan preview rapi.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a href="#explore" class="btn rounded-2xl bg-blue-600 px-7 py-4 text-center font-black text-white shadow-xl shadow-blue-600/25 hover:bg-blue-700">
+            Jelajahi Share
+          </a>
+          <a href="#explore" class="btn rounded-2xl bg-white px-7 py-4 text-center font-black text-slate-950 shadow-sm ring-1 ring-slate-200">
+            Cari Script
+          </a>
+        </div>
+
+        <div class="mt-10 grid gap-4 sm:grid-cols-3">
+          <div class="soft-card rounded-3xl p-5">
+            <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
+              <%- iconSvg('file') %>
+            </div>
+            <p class="text-3xl font-black tracking-tight"><%= formatNumber(stats.totalShares) %></p>
+            <p class="mt-1 text-sm font-bold text-slate-500">Total Share</p>
+          </div>
+
+          <div class="soft-card rounded-3xl p-5">
+            <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-50 text-violet-700">
+              <%- iconSvg('view') %>
+            </div>
+            <p class="text-3xl font-black tracking-tight"><%= formatNumber(stats.totalViews) %></p>
+            <p class="mt-1 text-sm font-bold text-slate-500">Total View</p>
+          </div>
+
+          <div class="soft-card rounded-3xl p-5">
+            <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+              <%- iconSvg('download') %>
+            </div>
+            <p class="text-3xl font-black tracking-tight"><%= formatNumber(stats.totalDownloads) %></p>
+            <p class="mt-1 text-sm font-bold text-slate-500">Total Download</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative fade-in">
+        <div class="absolute -right-8 -top-8 h-44 w-44 rounded-full bg-blue-500/15 blur-3xl"></div>
+        <div class="absolute -bottom-10 -left-8 h-44 w-44 rounded-full bg-slate-900/10 blur-3xl"></div>
+
+        <div class="glass floating relative rounded-[2rem] p-4">
+          <div class="overflow-hidden rounded-[1.5rem] bg-slate-950 text-white">
+            <div class="flex items-center justify-between border-b border-white/10 px-5 py-4">
+              <div>
+                <p class="text-sm font-bold text-blue-300">Featured Share</p>
+                <h3 class="text-2xl font-black tracking-tight"><%= featured ? featured.title : 'Zyphra Featured' %></h3>
+              </div>
+              <span class="rounded-full bg-emerald-400 px-4 py-2 text-xs font-black text-slate-950">
+                <%= featured ? categoryLabels[featured.category] : 'READY' %>
+              </span>
+            </div>
+
+            <div class="preview-grid p-5">
+              <% if (featured && featured.type === 'code') { %>
+                <div class="code-window mb-5 overflow-hidden rounded-3xl bg-slate-900 ring-1 ring-white/10">
+                  <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
+                    <div class="flex gap-2">
+                      <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                      <span class="h-3 w-3 rounded-full bg-yellow-400"></span>
+                      <span class="h-3 w-3 rounded-full bg-green-400"></span>
+                    </div>
+                    <span class="text-xs font-black uppercase text-white/45"><%= languageLabels[featured.language] || featured.language %></span>
+                  </div>
+                  <pre class="max-h-80 overflow-auto p-5 text-sm"><code class="language-<%= prismAliases[featured.language] || featured.language || 'text' %>"><%- escapeHtml(getSnippet(featured.code, 11)) %></code></pre>
+                </div>
+              <% } else { %>
+                <div class="mb-5 grid h-64 place-items-center overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800 via-blue-700 to-indigo-700 ring-1 ring-white/10">
+                  <% if (featured && featured.imageUrl) { %>
+                    <img src="<%= featured.imageUrl %>" alt="<%= featured.title %>" class="h-full w-full object-cover opacity-90">
+                  <% } else { %>
+                    <div class="text-center">
+                      <div class="mx-auto mb-4 grid h-20 w-20 place-items-center rounded-3xl bg-white text-3xl font-black text-slate-950 shadow-xl shadow-black/20">
+                        Z
+                      </div>
+                      <p class="text-3xl font-black">Zyphra Share</p>
+                      <p class="mt-2 text-sm font-semibold text-white/60">Script • Code • API</p>
+                    </div>
+                  <% } %>
+                </div>
+              <% } %>
+
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/10">
+                  <div class="flex items-center gap-3 text-white">
+                    <%- iconSvg('view', 'h-6 w-6 text-blue-200') %>
+                    <p class="text-3xl font-black"><%= formatNumber(featured ? featured.views : 0) %></p>
+                  </div>
+                </div>
+
+                <div class="rounded-3xl bg-white/10 p-5 ring-1 ring-white/10">
+                  <div class="flex items-center gap-3 text-white">
+                    <%- iconSvg('download', 'h-6 w-6 text-emerald-200') %>
+                    <p class="text-3xl font-black"><%= formatNumber(featured ? featured.downloads : 0) %></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-3xl bg-white p-4 text-slate-950">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm font-bold text-slate-500">Jenis konten</p>
+                    <p class="text-3xl font-black"><%= featured ? (featured.type === 'code' ? 'Code' : 'Script') : 'Script' %></p>
+                  </div>
+
+                  <% if (featured) { %>
+                    <a href="/share/<%= featured.slug %>" class="btn rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white">
+                      Detail
+                    </a>
+                  <% } else { %>
+                    <a href="#explore" class="btn rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white">
+                      Explore
+                    </a>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -bottom-6 right-8 hidden rounded-3xl bg-white px-5 py-4 shadow-2xl shadow-slate-950/10 ring-1 ring-slate-200 md:block">
+          <p class="text-sm font-bold text-slate-500">Preview code tersimpan</p>
+          <p class="text-2xl font-black"><%= formatNumber(stats.codeCount) %> Code</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="explore" class="py-12">
+      <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <p class="mb-3 inline-block rounded-full bg-white px-4 py-2 text-sm font-black text-slate-600 shadow-sm ring-1 ring-slate-200">
+            Explore Share
+          </p>
+          <h2 class="max-w-3xl text-4xl font-black leading-tight tracking-[-0.04em] md:text-5xl">
+            Pilih script atau kode yang ingin kamu lihat.
+          </h2>
+        </div>
+      </div>
+
+      <form class="glass mb-7 grid gap-3 rounded-[2rem] p-4 md:grid-cols-[1fr_180px_160px_auto]" method="GET" action="/#explore">
+        <input name="q" value="<%= query.q %>" class="form-input" placeholder="Cari script, code, API...">
+
+        <select name="category" class="form-select">
+          <option value="">Semua kategori</option>
+          <% Object.entries(categoryLabels).forEach(([value, label]) => { %>
+            <option value="<%= value %>" <%= query.category === value ? 'selected' : '' %>><%= label %></option>
+          <% }) %>
+        </select>
+
+        <select name="type" class="form-select">
+          <option value="">Semua tipe</option>
+          <option value="script" <%= query.type === 'script' ? 'selected' : '' %>>Script</option>
+          <option value="code" <%= query.type === 'code' ? 'selected' : '' %>>Code</option>
+        </select>
+
+        <button class="btn rounded-2xl bg-blue-600 px-6 py-3 font-black text-white shadow-xl shadow-blue-600/20">
+          Cari
+        </button>
+      </form>
+
+      <% if (!shares.length) { %>
+        <div class="soft-card rounded-[2rem] p-10 text-center">
+          <p class="text-4xl font-black">Belum ada data</p>
+          <p class="mt-3 font-semibold text-slate-500">Konten yang kamu cari belum tersedia.</p>
+          <a href="/" class="btn mt-6 inline-flex rounded-2xl bg-slate-950 px-6 py-3 font-black text-white">
+            Reset pencarian
+          </a>
+        </div>
+      <% } else { %>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <% shares.forEach((share) => { %>
+            <article class="product-card flex flex-col overflow-hidden rounded-[2rem]">
+              <% if (share.type === 'code') { %>
+                <div class="code-window h-56 overflow-hidden bg-slate-950 text-white">
+                  <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
+                    <span class="text-xs font-black text-blue-300"><%= languageLabels[share.language] || share.language %></span>
+                    <span class="rounded-full bg-white/10 px-3 py-1 text-xs font-black text-white/70">CODE</span>
+                  </div>
+                  <pre class="p-4 text-xs"><code class="language-<%= prismAliases[share.language] || share.language || 'text' %>"><%- escapeHtml(getSnippet(share.code, 8)) %></code></pre>
+                </div>
+              <% } else { %>
+                <div class="relative h-56 overflow-hidden bg-slate-950">
+                  <img src="<%= share.imageUrl || defaultImage(share.category) %>" alt="<%= share.title %>" class="h-full w-full object-cover opacity-90 transition duration-300 hover:scale-105">
+                  <div class="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-black text-slate-950 shadow">
+                    <%= categoryLabels[share.category] %>
+                  </div>
+                </div>
+              <% } %>
+
+              <div class="flex flex-1 flex-col p-6">
+                <div class="mb-4 flex flex-wrap gap-2">
+                  <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-blue-700 ring-1 ring-blue-100">
+                    <%= share.type === 'code' ? 'Code' : 'Script' %>
+                  </span>
+                  <span class="rounded-full bg-slate-50 px-3 py-1 text-xs font-black text-slate-700 ring-1 ring-slate-200">
+                    <%= categoryLabels[share.category] %>
+                  </span>
+                </div>
+
+                <h3 class="text-2xl font-black tracking-tight"><%= share.title %></h3>
+
+                <p class="mt-2 line-clamp-3 text-sm font-semibold leading-relaxed text-slate-500">
+                  <%= share.shortDescription || share.description || 'Tidak ada deskripsi singkat.' %>
+                </p>
+
+                <div class="mt-5 flex flex-wrap gap-2">
+                  <% (share.tags || []).slice(0, 3).forEach((tag) => { %>
+                    <span class="rounded-full bg-white px-3 py-1 text-xs font-black text-slate-500 ring-1 ring-slate-200">
+                      #<%= tag %>
+                    </span>
+                  <% }) %>
+                </div>
+
+                <div class="mt-auto flex items-center justify-between gap-4 pt-6">
+                  <div class="flex flex-wrap items-center gap-3 text-xs font-black text-slate-500">
+                    <span class="inline-flex items-center gap-1.5" title="View">
+                      <%- iconSvg('view', 'h-4 w-4') %><%= formatNumber(share.views) %>
+                    </span>
+
+                    <span class="inline-flex items-center gap-1.5" title="Download">
+                      <%- iconSvg('download', 'h-4 w-4') %><%= formatNumber(share.downloads) %>
+                    </span>
+
+                    <% if (share.type === 'code') { %>
+                      <span class="inline-flex items-center gap-1.5" title="Copy">
+                        <%- iconSvg('copy', 'h-4 w-4') %><%= formatNumber(share.copies) %>
+                      </span>
+                    <% } %>
+                  </div>
+
+                  <a href="/share/<%= share.slug %>" class="btn rounded-2xl bg-slate-950 px-4 py-3 text-sm font-black text-white">
+                    Detail
+                  </a>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+  <%- include('partials/chat') %>
+</body>
+</html>

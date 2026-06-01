@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/bg') %>
+  <%- include('partials/header') %>
+
+  <main class="mx-auto w-[92%] max-w-5xl py-10">
+    <section class="mb-8">
+      <a href="/admin" class="mb-5 inline-flex rounded-full bg-white px-4 py-2 text-sm font-black text-slate-600 ring-1 ring-slate-200">← Dashboard</a>
+      <h1 class="text-4xl font-black tracking-[-0.04em] md:text-6xl"><%= mode === 'add' ? 'Tambah Share Baru' : 'Edit Share' %></h1>
+      <p class="mt-3 max-w-2xl font-semibold leading-relaxed text-slate-500">
+        Pilih tipe script untuk share file dengan gambar dan URL download, atau tipe code untuk menampilkan preview syntax dan tombol copy.
+      </p>
+    </section>
+
+    <% if (error) { %>
+      <div class="mb-6 rounded-2xl bg-red-50 p-4 text-sm font-black text-red-700 ring-1 ring-red-100"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="<%= action %>" class="glass rounded-[2rem] p-5 md:p-7">
+      <div class="grid gap-5 md:grid-cols-2">
+        <label class="form-label md:col-span-2">
+          Judul
+          <input class="form-input" name="title" value="<%= share.title || '' %>" placeholder="Contoh: Bot WhatsApp Downloader Pro" required maxlength="120">
+        </label>
+
+        <label class="form-label">
+          Tipe Share
+          <select class="form-select" name="type" data-type-select>
+            <option value="script" <%= share.type === 'script' ? 'selected' : '' %>>Script / File Download</option>
+            <option value="code" <%= share.type === 'code' ? 'selected' : '' %>>Code / Snippet</option>
+          </select>
+        </label>
+
+        <label class="form-label">
+          Kategori
+          <select class="form-select" name="category">
+            <% Object.entries(categoryLabels).forEach(([value, label]) => { %>
+              <option value="<%= value %>" <%= share.category === value ? 'selected' : '' %>><%= label %></option>
+            <% }) %>
+          </select>
+        </label>
+
+        <label class="form-label md:col-span-2">
+          Deskripsi Singkat
+          <input class="form-input" name="shortDescription" value="<%= share.shortDescription || '' %>" placeholder="Ringkasan pendek untuk card halaman utama" maxlength="220">
+        </label>
+
+        <label class="form-label md:col-span-2">
+          Tags
+          <input class="form-input" name="tags" value="<%= Array.isArray(share.tags) ? share.tags.join(', ') : '' %>" placeholder="bot, downloader, api, free">
+        </label>
+
+        <label data-script-field class="form-label md:col-span-2">
+          URL Gambar / Thumbnail
+          <input class="form-input" name="imageUrl" value="<%= share.imageUrl || '' %>" placeholder="https://example.com/thumbnail.png">
+        </label>
+
+        <label data-script-field class="form-label md:col-span-2">
+          URL Download Script
+          <input class="form-input" name="downloadUrl" value="<%= share.downloadUrl || '' %>" placeholder="https://drive.google.com/... atau https://github.com/...">
+        </label>
+
+        <label data-code-field class="form-label">
+          Bahasa Syntax
+          <select class="form-select" name="language" data-language-select>
+            <% Object.entries(languageLabels).forEach(([value, label]) => { %>
+              <option value="<%= value %>" <%= share.language === value ? 'selected' : '' %>><%= label %></option>
+            <% }) %>
+          </select>
+        </label>
+
+        <label data-code-field class="form-label md:col-span-2">
+          Isi Code
+          <textarea class="form-textarea min-h-[360px] font-mono text-sm" name="code" data-code-textarea placeholder="Paste code di sini..."><%= share.code || '' %></textarea>
+        </label>
+
+        <div data-code-field class="md:col-span-2 rounded-3xl bg-slate-950 p-5 text-white ring-1 ring-slate-900/10">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-black text-blue-300">Auto Syntax Detector</p>
+              <p class="mt-1 text-xs font-bold text-white/45">Pilih Auto Detect agar bahasa code dideteksi otomatis saat disimpan.</p>
+            </div>
+            <span data-detected-syntax class="rounded-full bg-white px-4 py-2 text-xs font-black text-slate-950">Detected: -</span>
+          </div>
+        </div>
+
+        <label class="form-label md:col-span-2">
+          Deskripsi Detail / Markdown
+          <textarea class="form-textarea min-h-[260px]" name="description" placeholder="Bisa pakai markdown. Contoh: ## Fitur&#10;- Downloader&#10;- Admin page&#10;- Support Vercel"><%= share.description || '' %></textarea>
+        </label>
+
+        <div class="md:col-span-2 grid gap-3 rounded-3xl bg-white p-5 ring-1 ring-slate-200">
+          <label class="flex items-center gap-3 text-sm font-black text-slate-700">
+            <input type="checkbox" name="isFeatured" class="h-5 w-5 rounded border-slate-300" <%= share.isFeatured ? 'checked' : '' %>>
+            Jadikan featured di hero homepage
+          </label>
+          <label class="flex items-center gap-3 text-sm font-black text-slate-700">
+            <input type="hidden" name="isPublished" value="off">
+            <input type="checkbox" name="isPublished" class="h-5 w-5 rounded border-slate-300" <%= share.isPublished !== false ? 'checked' : '' %>>
+            Publikasikan di halaman utama
+          </label>
+        </div>
+      </div>
+
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+        <button class="btn rounded-2xl bg-blue-600 px-7 py-4 font-black text-white shadow-xl shadow-blue-600/20">
+          <%= mode === 'add' ? 'Simpan Share' : 'Update Share' %>
+        </button>
+        <a href="/admin" class="btn rounded-2xl bg-white px-7 py-4 text-center font-black text-slate-950 ring-1 ring-slate-200">Batal</a>
+      </div>
+    </form>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

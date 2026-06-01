@@ -1,0 +1,69 @@
+<header class="mx-auto w-[92%] max-w-7xl pt-5">
+  <nav class="glass flex items-center justify-between rounded-3xl px-5 py-4">
+    <a href="/" class="flex items-center gap-3">
+      <div class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-950 text-lg font-black text-white">
+        Z
+      </div>
+      <div>
+        <h1 class="text-lg font-black leading-none tracking-tight"><%= siteName %></h1>
+        <p class="text-xs font-bold text-slate-500">Script & Code Sharing</p>
+      </div>
+    </a>
+
+    <% if (isAdminArea) { %>
+      <div class="hidden items-center gap-7 text-sm font-bold text-slate-600 md:flex">
+        <a href="/admin" class="hover:text-slate-950 <%= path === '/admin' ? 'text-slate-950' : '' %>">Dashboard</a>
+        <a href="/admin/add" class="hover:text-slate-950">Tambah Share</a>
+        <a href="/" class="hover:text-slate-950">Preview Home</a>
+      </div>
+
+      <div class="hidden items-center gap-3 sm:flex">
+        <% if (isAdmin) { %>
+          <a href="/admin/add" class="hidden rounded-2xl px-5 py-2.5 text-sm font-black text-slate-700 hover:bg-slate-100 md:block">
+            Add Share
+          </a>
+          <a href="/admin/logout" class="btn rounded-2xl bg-slate-950 px-5 py-2.5 text-sm font-black text-white shadow-xl shadow-slate-950/15">
+            Logout
+          </a>
+        <% } else { %>
+          <a href="/" class="btn rounded-2xl bg-slate-950 px-5 py-2.5 text-sm font-black text-white shadow-xl shadow-slate-950/15">
+            Home
+          </a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="hidden items-center gap-7 text-sm font-bold text-slate-600 md:flex">
+        <a href="/" class="hover:text-slate-950 <%= path === '/' ? 'text-slate-950' : '' %>">Home</a>
+        <a href="/#explore" class="hover:text-slate-950">Explore</a>
+      </div>
+
+      <div class="hidden items-center gap-3 sm:flex">
+        <a href="/#explore" class="btn rounded-2xl bg-slate-950 px-5 py-2.5 text-sm font-black text-white shadow-xl shadow-slate-950/15">
+          Mulai
+        </a>
+      </div>
+    <% } %>
+
+    <button data-mobile-menu-button class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-950 text-white md:hidden" aria-label="Buka menu">
+      ☰
+    </button>
+  </nav>
+
+  <div data-mobile-menu class="glass mt-3 hidden rounded-3xl p-4 md:hidden">
+    <% if (isAdminArea) { %>
+      <div class="grid gap-2 text-sm font-black text-slate-700">
+        <a href="/admin" class="rounded-2xl px-4 py-3 hover:bg-white">Dashboard</a>
+        <a href="/admin/add" class="rounded-2xl px-4 py-3 hover:bg-white">Tambah Share</a>
+        <a href="/" class="rounded-2xl px-4 py-3 hover:bg-white">Preview Home</a>
+        <% if (isAdmin) { %>
+          <a href="/admin/logout" class="rounded-2xl px-4 py-3 hover:bg-white">Logout</a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="grid gap-2 text-sm font-black text-slate-700">
+        <a href="/" class="rounded-2xl px-4 py-3 hover:bg-white">Home</a>
+        <a href="/#explore" class="rounded-2xl px-4 py-3 hover:bg-white">Explore</a>
+      </div>
+    <% } %>
+  </div>
+</header>

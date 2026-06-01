@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <%- include('partials/bg') %>
+  <%- include('partials/header') %>
+
+  <main class="mx-auto grid min-h-[70vh] w-[92%] max-w-3xl place-items-center py-10">
+    <section class="glass rounded-[2rem] p-8 text-center md:p-12">
+      <p class="mb-4 inline-block rounded-full bg-red-50 px-4 py-2 text-sm font-black text-red-700 ring-1 ring-red-100">Error</p>
+      <h1 class="text-4xl font-black tracking-[-0.04em] md:text-6xl"><%= title %></h1>
+      <p class="mt-4 text-lg font-semibold leading-relaxed text-slate-500"><%= message %></p>
+      <div class="mt-7 flex justify-center gap-3">
+        <a href="/" class="btn rounded-2xl bg-blue-600 px-6 py-4 font-black text-white">Home</a>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+  <% if (!isAdminArea) { %>
+    <%- include('partials/chat') %>
+  <% } %>
+</body>
+</html>

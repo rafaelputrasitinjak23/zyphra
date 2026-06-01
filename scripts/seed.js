@@ -1,42 +1,61 @@
 require('dotenv').config();
-const connectDB = require('../config/db');
-const Product = require('../models/Product');
-const Banner = require('../models/Banner');
-const { slugify } = require('../utils');
 
-async function run() {
+const connectDB = require('../config/db');
+const Share = require('../models/Share');
+const { slugify } = require('../utils/helpers');
+
+const demo = [
+  {
+    title: 'Bot WhatsApp Downloader Pro',
+    slug: slugify('Bot WhatsApp Downloader Pro'),
+    type: 'script',
+    category: 'bot-wa',
+    imageUrl: 'https://placehold.co/900x560/0f172a/ffffff?text=Bot+WhatsApp+Pro',
+    shortDescription: 'Script bot WhatsApp untuk downloader, sticker, admin tools, dan automation.',
+    description: '## Fitur Utama\n- Downloader video dan audio\n- Sticker image/video\n- Admin tools grup\n- Struktur command rapi\n\nCocok untuk base bot WhatsApp modern.',
+    downloadUrl: 'https://github.com/',
+    tags: ['whatsapp', 'bot', 'downloader'],
+    isFeatured: true,
+    isPublished: true
+  },
+  {
+    title: 'Express MongoDB API Starter',
+    slug: slugify('Express MongoDB API Starter'),
+    type: 'code',
+    category: 'api',
+    language: 'javascript',
+    shortDescription: 'Starter REST API Express.js + MongoDB dengan struktur sederhana dan siap deploy.',
+    description: '## Tentang Code\nSnippet ini berisi contoh koneksi Express.js dengan MongoDB, routing API, dan error handler dasar.',
+    code: `const express = require('express');\nconst mongoose = require('mongoose');\n\nconst app = express();\napp.use(express.json());\n\nmongoose.connect(process.env.MONGODB_URI);\n\napp.get('/api/health', (req, res) => {\n  res.json({ ok: true, message: 'API ready' });\n});\n\napp.listen(3000, () => console.log('Server running'));`,
+    tags: ['express', 'mongodb', 'api'],
+    isFeatured: false,
+    isPublished: true
+  },
+  {
+    title: 'Telegram Broadcast Bot',
+    slug: slugify('Telegram Broadcast Bot'),
+    type: 'script',
+    category: 'telegram',
+    imageUrl: 'https://placehold.co/900x560/2563eb/ffffff?text=Telegram+Bot',
+    shortDescription: 'Template bot Telegram untuk broadcast, button, dan pengelolaan user.',
+    description: '## Cocok Untuk\n- Bot promosi\n- Bot notifikasi\n- Bot tools admin\n\nTambahkan token bot dan jalankan di hosting Node.js.',
+    downloadUrl: 'https://github.com/',
+    tags: ['telegram', 'broadcast', 'bot'],
+    isFeatured: false,
+    isPublished: true
+  }
+];
+
+async function seed() {
   await connectDB();
-  await Product.deleteMany({});
-  await Banner.deleteMany({});
-  await Product.insertMany([
-    {
-      name: 'Bot WhatsApp Store Script',
-      slug: slugify('Bot WhatsApp Store Script'),
-      description: 'Source code bot WhatsApp untuk toko digital, sudah support fitur katalog, order, dan admin sederhana.',
-      price: 75000,
-      stock: 20,
-      imageUrl: 'https://images.unsplash.com/photo-1556155092-490a1ba16284?q=80&w=1200&auto=format&fit=crop',
-      fileUrl: 'https://example.com/files/bot-whatsapp-store.zip',
-      category: 'Bot Script',
-      featured: true
-    },
-    {
-      name: 'REST API Starter Express',
-      slug: slugify('REST API Starter Express'),
-      description: 'Template REST API Express.js dengan auth, MongoDB, rate limit, dan dokumentasi endpoint.',
-      price: 50000,
-      stock: 15,
-      imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop',
-      fileUrl: 'https://example.com/files/rest-api-starter.zip',
-      category: 'REST API',
-      featured: true
-    }
-  ]);
-  await Banner.insertMany([
-    { title: 'Diskon Script Premium', imageUrl: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=1200&auto=format&fit=crop', link: '/' },
-    { title: 'Produk Eksklusif', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop', link: '/' }
-  ]);
-  console.log('Seed selesai');
+  for (const item of demo) {
+    await Share.findOneAndUpdate({ slug: item.slug }, item, { upsert: true, new: true });
+  }
+  console.log('Demo data berhasil dibuat.');
   process.exit(0);
 }
-run().catch(err => { console.error(err); process.exit(1); });
+
+seed().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
