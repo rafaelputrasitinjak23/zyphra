@@ -178,11 +178,16 @@ function getAiCreatorName() {
 
 function cleanAiAnswer(answer) {
   return String(answer || '')
-    .replace(/\*\*/g, '')
-    .replace(/__+/g, '')
+    .replace(/\\?\*{2,3}([^*]+?)\\?\*{2,3}/g, '$1')
+    .replace(/__([^_]+?)__/g, '$1')
+    .replace(/_([^_]+?)_/g, '$1')
+    .replace(/`{3}[a-zA-Z0-9_-]*\n?/g, '')
     .replace(/`{1,3}/g, '')
+    .replace(/^\s{0,3}#{1,6}\s*/gm, '')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1')
     .replace(/https?:\/\/[^\s)]+/g, '')
+    .replace(/^\s*[-*]\s+/gm, '• ')
+    .replace(/\\?\*/g, '')
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
@@ -227,7 +232,7 @@ Identitas:
 Aturan jawaban:
 - Jawab natural seperti chat assistant profesional, bukan seperti bot kaku.
 - Gunakan bahasa Indonesia yang rapi, ramah, singkat, jelas, dan percaya diri.
-- Jangan gunakan markdown tebal seperti **teks**.
+- Jangan gunakan markdown apa pun. Jangan pakai tanda **, *, _, #, backtick, atau format link markdown.
 - Jangan tulis link mentah atau URL di jawaban. Jika merekomendasikan konten, cukup arahkan user untuk klik tombol hasil yang muncul di bawah chat.
 - Jangan mengarang judul, link, harga, fitur, atau file yang tidak ada di data.
 - Jawab hanya berdasarkan DATA KONTEN PUBLIK di bawah saat membahas isi website.
@@ -498,7 +503,7 @@ app.post('/api/chat', ensureDB, async (req, res) => {
     history ? `Riwayat chat singkat:\n${history}` : '',
     `Pertanyaan user: ${prompt}`,
     cardContext ? `Konten yang akan ditampilkan website sebagai tombol hasil:\n${cardContext}` : '',
-    'Jawab sebagai Zyphra AI. Jangan gunakan markdown tebal. Jangan tulis URL mentah. Jika ada hasil pencarian, arahkan user untuk klik tombol hasil di bawah chat.'
+    'Jawab sebagai Zyphra AI dengan format chat rapi. Jangan gunakan markdown, jangan pakai tanda **, *, _, #, atau backtick. Jangan tulis URL mentah. Jika ada hasil pencarian, arahkan user untuk klik tombol hasil di bawah chat.'
   ]
     .filter(Boolean)
     .join('\n\n');

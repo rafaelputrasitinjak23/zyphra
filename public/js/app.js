@@ -160,11 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function cleanDisplayText(value) {
       return String(value || '')
-        .replace(/\*\*/g, '')
-        .replace(/__+/g, '')
+        .replace(/\\?\*{2,3}([^*]+?)\\?\*{2,3}/g, '$1')
+        .replace(/__([^_]+?)__/g, '$1')
+        .replace(/_([^_]+?)_/g, '$1')
+        .replace(/`{3}[a-zA-Z0-9_-]*\n?/g, '')
         .replace(/`{1,3}/g, '')
+        .replace(/^\s{0,3}#{1,6}\s*/gm, '')
         .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1')
         .replace(/https?:\/\/[^\s)]+/g, '')
+        .replace(/^\s*[-*]\s+/gm, '• ')
+        .replace(/\\?\*/g, '')
+        .replace(/[ \t]+\n/g, '\n')
         .replace(/\n{3,}/g, '\n\n')
         .trim();
     }
@@ -179,7 +185,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderMessage(value) {
-      return escapeMessage(cleanDisplayText(value)).replace(/\n/g, '<br>');
+      const clean = cleanDisplayText(value);
+      if (!clean) return '';
+      const lines = clean.split('\n').map((line) => line.trim()).filter(Boolean);
+      return lines
+        .map((line) => {
+          const isList = /^(•|\d+[.)])\s+/.test(line);
+          const className = isList ? 'zyphra-chat-line zyphra-chat-line-list' : 'zyphra-chat-line';
+          return `<div class="${className}">${escapeMessage(line)}</div>`;
+        })
+        .join('');
     }
 
     function safeCardText(value) {

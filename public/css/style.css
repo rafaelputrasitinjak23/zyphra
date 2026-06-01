@@ -302,6 +302,14 @@ body {
   border-bottom-right-radius: 0.35rem;
 }
 
+.zyphra-chat-line + .zyphra-chat-line {
+  margin-top: 0.45rem;
+}
+
+.zyphra-chat-line-list {
+  padding-left: 0.15rem;
+}
+
 .zyphra-msg-ai .zyphra-msg-bubble {
   background: #f1f5f9;
   color: #334155;
